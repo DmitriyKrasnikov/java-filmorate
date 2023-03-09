@@ -1,11 +1,12 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.UserRepository;
 import ru.yandex.practicum.filmorate.service.ValidateService;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,14 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser (@RequestBody User user) throws ValidationException {
-            validateService.validateUser(user);
-            userRepository.addUser(user);
-            return user;
+    public User addUser(@RequestBody @Valid User user) throws ValidationException {
+        validateService.validateUser(user);
+        userRepository.addUser(user);
+        return user;
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) throws ValidationException{
+    public User updateUser(@RequestBody @Valid User user) throws ValidationException {
         validateService.validateUser(user);
         userRepository.updateUser(user);
         return user;

@@ -1,11 +1,12 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.repository.FilmRepository;
 import ru.yandex.practicum.filmorate.service.ValidateService;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,14 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film addFilm(@RequestBody Film film) throws ValidationException {
-            validateService.validateFilm(film);
-            filmRepository.addFilm(film);
-            return film;
+    public Film addFilm(@RequestBody @Valid Film film) throws ValidationException {
+        validateService.validateFilm(film);
+        filmRepository.addFilm(film);
+        return film;
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@RequestBody @Valid Film film) throws ValidationException {
         validateService.validateFilm(film);
         filmRepository.updateFilm(film);
         return film;

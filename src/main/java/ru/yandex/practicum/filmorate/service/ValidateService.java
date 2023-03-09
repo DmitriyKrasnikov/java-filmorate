@@ -12,25 +12,15 @@ import java.time.LocalDate;
 @Slf4j
 public class ValidateService {
 
-    public void validateUser(User user) throws ValidationException {
-        if (user.getEmail().isBlank() ||
-                !user.getEmail().contains("@") ||
-                user.getLogin().isBlank() ||
-                user.getBirthday().isAfter(LocalDate.now())) {
-            log.debug("Пользователь не прошел валидацию: {}", user);
-            throw new ValidationException("Ошибка валидации пользователя");
-        }
+    public void validateUser(User user){
         if (user.getName() == null||user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
     }
 
     public void validateFilm(Film film) throws ValidationException{
-        if(film.getName() == null ||
-                film.getName().isBlank() ||
-                film.getDescription().length() > 200 ||
-                film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28)) ||
-                film.getDuration() < 0) {
+        if(film.getReleaseDate() == null ||
+                film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             log.debug("Фильм не прошёл валидацию: {}", film);
             throw new ValidationException("Ошибка валидации фильма");
         }
