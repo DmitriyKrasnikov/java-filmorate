@@ -12,6 +12,7 @@
     <artifactId>filmorate</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>filmorate</name>
+    <description>An application to help you choose a movie</description>
     <properties>
         <java.version>11</java.version>
     </properties>
