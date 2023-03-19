@@ -14,7 +14,7 @@ import java.util.HashSet;
 public class ValidateService {
 
     public void validateUser(User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
+        if (user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
         if (user.getFriends() == null) {

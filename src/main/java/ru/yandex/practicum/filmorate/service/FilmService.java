@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,40 @@ public class FilmService {
     @Autowired
     public FilmService(FilmStorage storage) {
         this.storage = storage;
+    }
+
+    public void addFilm(Film film) throws ValidationException {
+        if (film == null) {
+            throw new ValidationException("Передан пустой объект");
+        }
+        if (storage.getFilms().containsValue(film)) {
+            log.debug("Фильм уже существует {}", film);
+            throw new ValidationException("Ошибка при добавлении фильма");
+        }
+        storage.addFilm(film);
+    }
+
+    public void updateFilm(Film film) throws ValidationException, FilmNotFoundException {
+        if (film == null) {
+            throw new ValidationException("Передан пустой объект");
+        }
+        if (!storage.getFilms().containsKey(film.getId())) {
+            log.debug("Список фильмов пуст или фильм не существует {}", film);
+            throw new FilmNotFoundException("Ошибка при обновлении фильма");
+        }
+        storage.updateFilm(film);
+    }
+
+    public Film getFilmById(int id) throws FilmNotFoundException {
+        if (!storage.getFilms().containsKey(id)) {
+            log.debug("Список фильмов пуст или фильм не существует {}", id);
+            throw new FilmNotFoundException("Ошибка при обновлении фильма");
+        }
+        return storage.getFilmById(id);
+    }
+
+    public HashMap<Integer, Film> getFilms() {
+        return storage.getFilms();
     }
 
     public void addLike(int userId, int filmId) throws FilmNotFoundException {

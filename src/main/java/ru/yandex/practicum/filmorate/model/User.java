@@ -12,6 +12,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 public class User {
+    @NotNull
     private int id;
     @NotBlank
     private String login;

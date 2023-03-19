@@ -1,17 +1,14 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.HashMap;
+
 @Component
 @Getter
-@Slf4j
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
     private int generalId = 0;
 
@@ -21,38 +18,23 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     @Override
-    public void addUser(User user) throws ValidationException {
-        if (users.containsValue(user)) {
-            log.debug("Пользователь уже существует: {}", user);
-            throw new ValidationException("Пользователь уже существует");
-        } else {
-            user.setId(generateId());
-            users.put(user.getId(), user);
-            log.info("Пользователь добавлен: {}", user);
-        }
+    public void addUser(User user) {
+        user.setId(generateId());
+        users.put(user.getId(), user);
     }
 
     @Override
-    public void updateUser(User user) throws UserNotFoundException {
-        if(users.isEmpty() || !users.containsKey(user.getId())){
-            log.debug("Список пуст, либо пользователь: {} не существует", user);
-            throw new UserNotFoundException("Ошибка при обновлении пользователя");
-        } else {
-            users.replace(user.getId(), user);
-            log.info("Пользователь обновлен: {}", user);
-        }
+    public void updateUser(User user) {
+        users.replace(user.getId(), user);
     }
 
     @Override
-    public User getUserById(int id) throws UserNotFoundException {
-        if(users.isEmpty() || !users.containsKey(id)){
-            log.debug("Список пуст, либо пользователь: {} не существует", id);
-            throw new UserNotFoundException("Ошибка при обновлении пользователя");
-        } else {
-            return users.get(id);
-        }
+    public User getUserById(int id) {
+        return users.get(id);
     }
 
     @Override
-    public HashMap<Integer,User> getUsers(){return users;}
+    public HashMap<Integer, User> getUsers() {
+        return users;
+    }
 }

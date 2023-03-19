@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.HashMap;
@@ -11,11 +9,11 @@ import java.util.HashMap;
 public interface FilmStorage {
     int generateId();
 
-    void addFilm(Film film) throws ValidationException;
+    void addFilm(Film film);
 
-    void updateFilm(Film film) throws ValidationException, FilmNotFoundException;
+    void updateFilm(Film film);
 
-    Film getFilmById(int id) throws FilmNotFoundException;
+    Film getFilmById(int id);
 
     HashMap<Integer, Film> getFilms();
 }

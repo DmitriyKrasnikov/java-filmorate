@@ -9,10 +9,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -24,6 +21,44 @@ public class UserService {
     @Autowired
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
+    }
+
+    public void addUser(User user) throws ValidationException {
+        if (user == null) {
+            log.debug("Передан пустой объект: {}", (Object) null);
+            throw new ValidationException("Передан пустой объект");
+        }
+        if (userStorage.getUsers().containsValue(user)) {
+            log.debug("Пользователь уже существует: {}", user);
+            throw new ValidationException("Пользователь уже существует");
+        }
+        userStorage.addUser(user);
+    }
+
+    public void updateUser(User user) throws ValidationException, UserNotFoundException {
+        if (user == null) {
+            log.debug("Передан пустой объект: {}", (Object) null);
+            throw new ValidationException("Передан пустой объект");
+        }
+        if (userStorage.getUsers().isEmpty() || !userStorage.getUsers().containsKey(user.getId())) {
+            log.debug("Список пуст, либо пользователь: {} не существует", user);
+            throw new UserNotFoundException("Ошибка при обновлении пользователя");
+        } else {
+            userStorage.updateUser(user);
+        }
+    }
+
+    public User getUserById(int id) throws UserNotFoundException {
+        if (userStorage.getUsers().isEmpty() || !userStorage.getUsers().containsKey(id)) {
+            log.debug("Список пуст, либо пользователь: {} не существует", id);
+            throw new UserNotFoundException("Ошибка при обновлении пользователя");
+        } else {
+            return userStorage.getUserById(id);
+        }
+    }
+
+    public HashMap<Integer, User> getUsers() {
+        return userStorage.getUsers();
     }
 
     public void addFriend(int id, int friendId) throws ValidationException, UserNotFoundException {
@@ -43,6 +78,7 @@ public class UserService {
     }
 
     public List<User> getFriends(int id) {
+        isExist(id);
         List<User> friends = new ArrayList<>();
         for (int UserId : userStorage.getUsers().get(id).getFriends()) {
             friends.add(userStorage.getUsers().get(UserId));
@@ -51,6 +87,8 @@ public class UserService {
     }
 
     public List<User> getMutualFriends(int id, int friendId) throws UserNotFoundException {
+        isExist(id);
+        isExist(friendId);
         Set<Integer> mutualFriendsId = new HashSet<>(userStorage.getUsers().get(id).getFriends());
         mutualFriendsId.retainAll(userStorage.getUsers().get(friendId).getFriends());
         List<User> mutualFriends = new ArrayList<>();
