@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -20,23 +22,24 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public void addFilm(Film film) {
+    public Film addObject(Film film) {
         film.setId(generateId());
         films.put(film.getId(), film);
+        return film;
     }
 
     @Override
-    public void updateFilm(Film film) {
+    public void updateObject(Film film) {
         films.replace(film.getId(), film);
     }
 
     @Override
-    public Film getFilmById(int id) {
+    public Film getObjectById(int id) {
         return films.get(id);
     }
 
     @Override
-    public HashMap<Integer, Film> getFilms() {
-        return films;
+    public List<Film> getObjects() {
+        return new ArrayList<>(films.values());
     }
 }

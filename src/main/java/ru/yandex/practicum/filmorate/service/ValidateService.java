@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 @Component
@@ -17,9 +18,6 @@ public class ValidateService {
         if (user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-        if (user.getFriends() == null) {
-            user.setFriends(new HashSet<>());
-        }
     }
 
     public void validateFilm(Film film) throws ValidationException {
@@ -28,8 +26,8 @@ public class ValidateService {
             log.debug("Фильм не прошёл валидацию: {}", film);
             throw new ValidationException("Ошибка валидации фильма");
         }
-        if (film.getLikes() == null) {
-            film.setLikes(new HashSet<>());
+        if(film.getGenres() == null) {
+            film.setGenres(new ArrayList<>());
         }
     }
 }

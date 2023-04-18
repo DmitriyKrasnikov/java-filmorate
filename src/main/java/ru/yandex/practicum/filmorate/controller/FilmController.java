@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.service.ValidateService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,7 +38,7 @@ public class FilmController {
     @GetMapping
     public List<Film> getFilms() {
         log.info("Получение списка всех фильмов");
-        return new ArrayList<>(filmService.getFilms().values());
+        return filmService.getFilms();
     }
 
     @PostMapping
@@ -66,7 +65,7 @@ public class FilmController {
 
     @DeleteMapping("/{id}/like/{userId}")
     public void deleteLike(@PathVariable Integer id, @PathVariable Integer userId) throws FilmNotFoundException {
-        userService.isExist(userId);
+        userService.getUserById(userId);
         filmService.removeLike(userId, id);
         log.info("Пользователь {} убрал лайк у фильма {}", userId, id);
     }

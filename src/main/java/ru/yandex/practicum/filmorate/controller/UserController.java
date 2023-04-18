@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.service.ValidateService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,15 +36,14 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         log.info("Получение списка всех пользователей");
-        return new ArrayList<>(userService.getUsers().values());
+        return userService.getUsers();
     }
 
     @PostMapping
     public User addUser(@RequestBody @Valid User user) throws ValidationException {
         validateService.validateUser(user);
-        userService.addUser(user);
         log.info("Пользователь добавлен: {}", user);
-        return user;
+        return userService.addUser(user);
     }
 
     @PutMapping
@@ -57,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Integer id, @PathVariable Integer friendId) throws ValidationException, UserNotFoundException {
+    public void addFriend(@PathVariable Integer id, @PathVariable Integer friendId) throws UserNotFoundException {
         userService.addFriend(id, friendId);
         log.info("Пользователи с id {} и id {} добавлены в друзья", id, friendId);
     }
