@@ -39,7 +39,7 @@ public class UserDao implements UserDaoStorage {
     @Override
     public User getObjectById(int id) {
         return jdbcTemplate.query("SELECT * FROM user_data WHERE id = ?", (rs, rowNum) -> makeUser(rs), id).stream()
-                .findAny().orElseThrow(() ->new UserNotFoundException("Пользователь с указанным id "+ id +" не найден"));
+                .findAny().orElseThrow(() -> new UserNotFoundException("Пользователь с указанным id " + id + " не найден"));
     }
 
     private Integer getTableId() {
