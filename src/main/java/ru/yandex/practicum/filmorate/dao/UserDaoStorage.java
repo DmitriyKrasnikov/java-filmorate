@@ -13,4 +13,6 @@ public interface UserDaoStorage extends MainStorage<User> {
     List<User> getFriends(int id);
 
     List<User> getMutualFriends(int id, int friendId);
+
+    void clearTable();
 }
