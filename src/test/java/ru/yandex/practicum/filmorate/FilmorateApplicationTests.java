@@ -35,6 +35,7 @@ class FilmorateApplicationTests {
         doesErrorAppearWhenDeleteFriend();
         shouldGetFriends();
         shouldGetMutualFriends();
+        userStorage.clearTable();
     }
 
     @Test
@@ -43,6 +44,7 @@ class FilmorateApplicationTests {
         doesErrorAppearWhenUpdateFilm();
         shouldGetCorrectFilmById();
         shouldGetFilms();
+        doesErrorAppearWhenAddUser();
         doesErrorAppearWhenAddAddLike();
         doesErrorAppearWhenRemoveLike();
         shouldGetMostPopularFilm();
@@ -50,6 +52,7 @@ class FilmorateApplicationTests {
         shouldGetCorrectGenreById();
         shouldGetRatings();
         shouldGetCorrectRatingById();
+        userStorage.clearTable();
     }
 
     public void doesErrorAppearWhenAddUser() {
