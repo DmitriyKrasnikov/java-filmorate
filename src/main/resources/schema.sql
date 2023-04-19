@@ -32,9 +32,11 @@ CREATE TABLE IF NOT EXISTS user_data (
         name varchar(40) NOT NULL,
         birthday DATE NOT NULL,
         email VARCHAR   NOT NULL,
-        CONSTRAINT user_const CHECK (login <> '' AND email <> '' ),
-        CONSTRAINT exist_email UNIQUE (email)
+        CONSTRAINT user_const CHECK (login <> '' AND email <> '' )
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS user_email_uindex ON user_data (email);
+CREATE UNIQUE INDEX IF NOT EXISTS user_login_uindex ON user_data (login);
 
 CREATE TABLE IF NOT EXISTS friends(
         user_id INTEGER REFERENCES user_data (id) ON DELETE CASCADE,
