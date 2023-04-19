@@ -29,7 +29,6 @@ public class FilmService {
     }
 
     public void updateFilm(Film film) {
-        film.setGenres(film.getGenres().stream().distinct().collect(Collectors.toList()));
         storage.updateObject(film);
     }
 

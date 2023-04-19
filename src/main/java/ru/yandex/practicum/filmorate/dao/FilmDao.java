@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.Rating;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Component
@@ -38,7 +39,7 @@ public class FilmDao implements FilmDaoStorage {
     public void updateObject(Film film) {
         getObjectById(film.getId());
         jdbcTemplate.update("UPDATE film SET name = ?, description = ?, realise_date = ?, duration = ?," +
-                " rating_id = ? WHERE id = ?", film.getName(), film.getDescription(), film.getReleaseDate().toString(),
+                        " rating_id = ? WHERE id = ?", film.getName(), film.getDescription(), film.getReleaseDate().toString(),
                 film.getDuration(), film.getMpa().getId(), film.getId());
 
         if (film.getGenres() != null) {
@@ -106,9 +107,10 @@ public class FilmDao implements FilmDaoStorage {
         return jdbcTemplate.query("SELECT * FROM genre ORDER BY id ", (rs, rowNum) -> makeGenre(rs));
     }
 
-    private List<Genre> getFilmGenres(int id) {
-        return jdbcTemplate.query("SELECT * FROM genre WHERE id IN (SELECT genre_id AS id FROM film_genres WHERE " +
-                "film_id = ?)", (rs, rowNum) -> makeGenre(rs), id);
+    private LinkedHashSet<Genre> getFilmGenres(int id) {
+        List<Genre> genres = jdbcTemplate.query("SELECT * FROM genre WHERE id IN (SELECT genre_id AS id FROM " +
+                "film_genres WHERE film_id = ?) ORDER BY id", (rs, rowNum) -> makeGenre(rs), id);
+        return new LinkedHashSet<>(genres);
     }
 
     @Override
