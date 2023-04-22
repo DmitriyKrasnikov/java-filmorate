@@ -16,21 +16,21 @@ public class ErrorHandler {
     @ExceptionHandler({UserNotFoundException.class, FilmNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse notFoundHandler(final RuntimeException e) {
-        log.debug("Получен статус Not found");
+        log.debug("Получен статус 404 Not found");
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse badRequestHandler(final ValidationException e) {
-        log.debug("Получен статус Bad request");
+        log.debug("Получен статус 400 Bad request");
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse internalServerErrorHandler(final Throwable e) {
-        log.debug("Получен статус Internal server error");
+        log.debug("Получен статус 500 Internal server error");
         return new ErrorResponse(e.getMessage());
     }
 

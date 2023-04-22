@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class User {
-    @NotNull
-    private int id;
+    private Integer id;
     @NotBlank
     private String login;
     private String name;
@@ -23,7 +24,6 @@ public class User {
     @NotBlank
     @Email
     private final String email;
-    private Set<Integer> friends;
 }
 
 
